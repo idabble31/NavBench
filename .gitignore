@@ -1,0 +1,8 @@
+# Ignore build and log files
+/build
+/devel
+/install
+/logs
+*.pyc
+*.swp
+.DS_Store
