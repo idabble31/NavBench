@@ -1,2 +1,0 @@
-aws-robomaker-small-warehouse-world:dynamic_logistics_warehouse:mobile_manipulator_body
--DCATKIN_DEVEL_PREFIX=/home/raflydaffaldi/lrf_1/devel -DCMAKE_INSTALL_PREFIX=/home/raflydaffaldi/lrf_1/install -G Unix Makefiles
