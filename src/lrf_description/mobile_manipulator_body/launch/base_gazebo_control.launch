@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Load robot description -->
+  <param name="robot_description" textfile="$(find mobile_manipulator_body)/urdf/robot_base.urdf" />
+
+  <!-- Load control parameters -->
+  <rosparam command="load" file="$(find mobile_manipulator_body)/config/control.yaml" />
+
+  <!-- Load warehouse world (don't launch empty_world, only one world at a time) -->
+  <!-- <include file="$(find aws_robomaker_small_warehouse_world)/launch/no_roof_small_warehouse.launch" /> -->
+  <include file="$(find dynamic_logistics_warehouse)/launch/logistics_warehouse.launch" />
+
+  <!-- Delay robot spawn to ensure Gazebo world is ready -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
+        args="-param robot_description -urdf -model robot_base" 
+        output="screen" />
+
+  <!-- Spawn controllers after robot is spawned -->
+  <node name="base_controller_spawner" pkg="controller_manager" type="spawner" 
+        args="robot_base_joint_publisher robot_base_velocity_controller" 
+        output="screen" />
+
+</launch>
