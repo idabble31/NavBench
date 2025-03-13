@@ -1,0 +1,18 @@
+<library path="lib/liblrf_global_planner">
+  <class name="lrf_global_planner/DijkstraPlanner"
+         type="lrf_global_planner::DijkstraPlanner"
+         base_class_type="nav_core::BaseGlobalPlanner">
+    <description>
+      Dijkstra global planner.
+    </description>
+  </class>
+
+<!-- Template on how to add new planner plugin into this package -->
+  <!-- <class name="lrf_global_planner/<name of your planner>>"
+         type="lrf_global_planner::<name of your planner>>"
+         base_class_type="nav_core::BaseGlobalPlanner">
+    <description>
+      <brief description of your planner>>
+    </description>
+  </class> -->
+</library>

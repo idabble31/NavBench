@@ -7,8 +7,8 @@
   <rosparam command="load" file="$(find mobile_manipulator_body)/config/control.yaml" />
 
   <!-- Load warehouse world (don't launch empty_world, only one world at a time) -->
-  <!-- <include file="$(find aws_robomaker_small_warehouse_world)/launch/no_roof_small_warehouse.launch" /> -->
-  <include file="$(find dynamic_logistics_warehouse)/launch/logistics_warehouse.launch" />
+  <include file="$(find aws_robomaker_small_warehouse_world)/launch/small_warehouse.launch" />
+  <!-- <include file="$(find dynamic_logistics_warehouse)/launch/logistics_warehouse.launch" /> -->
 
   <!-- Delay robot spawn to ensure Gazebo world is ready -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 

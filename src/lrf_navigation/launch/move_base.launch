@@ -1,0 +1,41 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="cmd_vel_topic" default="/robot_base_velocity_controller/cmd_vel" />
+  <arg name="odom_topic" default="/robot_base_velocity_controller/odom" />
+  
+  <!-- Map server -->
+  <arg name="map_file" default="$(find lrf_navigation)/maps/map.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+  
+  <!-- AMCL for localization -->
+  <include file="$(find lrf_navigation)/launch/amcl.launch" />
+  
+  <!-- Move base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+    
+    <!-- Load common parameters -->
+    <rosparam file="$(find lrf_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find lrf_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    
+    <!-- Load costmap parameters -->
+    <rosparam file="$(find lrf_navigation)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find lrf_navigation)/config/local_costmap_params.yaml" command="load" />
+    
+    <!-- Load base parameters -->
+    <rosparam file="$(find lrf_navigation)/config/move_base_params.yaml" command="load" />
+    
+    <!-- Set the global planner to use your custom planner -->
+    <param name="base_global_planner" value="dijkstra_planner/DijkstraPlanner" />
+    
+    <!-- Load parameters for your custom global planner -->
+    <rosparam file="$(find lrf_navigation)/config/dijkstra_planner_params.yaml" command="load" />
+    
+    <!-- Set the local planner to DWA -->
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    
+    <!-- Load parameters for local planner -->
+    <rosparam file="$(find lrf_navigation)/config/dwa_local_planner_params.yaml" command="load" />
+  </node>
+</launch>

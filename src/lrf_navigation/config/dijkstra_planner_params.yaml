@@ -1,0 +1,2 @@
+DijkstraPlanner:
+  allow_unknown: true    # Set to false if you don't want to plan through unknown areas

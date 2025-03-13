@@ -1,0 +1,25 @@
+<launch>
+  <node pkg="amcl" type="amcl" name="amcl">
+    <!-- AMCL parameters -->
+    <param name="odom_frame_id" value="/robot_base_velocity_controller/odom"/>
+    <param name="odom_model_type" value="diff"/>
+    <param name="base_frame_id" value="base_link"/>
+    <param name="global_frame_id" value="map"/>
+    
+    <!-- Parameters for initial pose -->
+    <param name="initial_pose_x" value="0.0"/>
+    <param name="initial_pose_y" value="0.0"/>
+    <param name="initial_pose_a" value="0.0"/>
+    
+    <!-- Laser parameters -->
+    <param name="laser_max_beams" value="180"/>
+    <param name="laser_max_range" value="8.0"/>
+    <param name="laser_min_range" value="0.1"/>
+    
+    <!-- Other AMCL parameters -->
+    <param name="min_particles" value="500"/>
+    <param name="max_particles" value="5000"/>
+    <param name="update_min_d" value="0.1"/>
+    <param name="update_min_a" value="0.2"/>
+  </node>
+</launch>
