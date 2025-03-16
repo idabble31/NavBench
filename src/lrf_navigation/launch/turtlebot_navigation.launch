@@ -1,0 +1,41 @@
+<launch>
+  <!-- ===================== Arguments ===================== -->
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="map_file" default="$(find turtlebot3_navigation)/maps/map.yaml" doc="Full path to map yaml file"/>
+  <arg name="open_rviz" default="true" doc="Open RViz for visualization"/>
+  <arg name="move_forward_only" default="false" doc="Use forward-only local planner if true"/>
+
+  <!-- ===================== Gazebo Simulation ===================== -->
+  <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_world.launch">
+    <arg name="model" value="$(arg model)" />
+  </include>
+
+  <!-- ===================== Map Server ===================== -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!-- ===================== AMCL Localization ===================== -->
+  <include file="$(find turtlebot3_navigation)/launch/amcl.launch" />
+
+  <!-- ===================== Set Global and Local Planners ===================== -->
+  <param name="base_global_planner" value="lrf_global_planner/DijkstraPlanner" />
+  <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+
+  <!-- ===================== Load Costmap & Planner Parameters ===================== -->
+  <rosparam file="$(find lrf_navigation)/config/dijkstra_planner_params.yaml" command="load" />
+  <rosparam file="$(find lrf_navigation)/config/global_costmap_params.yaml" command="load" />
+  <rosparam file="$(find lrf_navigation)/config/local_costmap_params.yaml" command="load" />
+  <rosparam file="$(find lrf_navigation)/config/costmap_common_params.yaml" command="load" />
+  <rosparam file="$(find lrf_navigation)/config/dwa_planner_params.yaml" command="load" />
+
+  <!-- ===================== Move Base ===================== -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <param name="base_global_planner" value="lrf_global_planner/DijkstraPlanner"/>
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>
+  </node>
+
+  <!-- ===================== RViz (Optional) ===================== -->
+  <group if="$(arg open_rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find turtlebot3_navigation)/rviz/turtlebot3_navigation.rviz" />
+  </group>
+</launch>
